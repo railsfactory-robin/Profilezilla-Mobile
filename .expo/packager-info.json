@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19003,
+  "packagerPid": 26631,
+  "expoServerNgrokUrl": "https://js-rrq.anonymous.profilezilla.exp.direct",
+  "packagerNgrokUrl": "https://packager.js-rrq.anonymous.profilezilla.exp.direct",
+  "ngrokPid": 26693,
   "webpackServerPort": null
 }

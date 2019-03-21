@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView, StyleSheet, View, Text, Image } from 'react-native';
 import LogoTitle from './LogoTitle'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
-import Icon from 'react-native-fontawesome';
 
 const user_img = 'http://icons.iconarchive.com/icons/custom-icon-design/silky-line-user/256/user-icon.png'
 const education_img = 'https://cdn1.iconfinder.com/data/icons/resume-pictograms/100/Resume_Graduate-512.png'

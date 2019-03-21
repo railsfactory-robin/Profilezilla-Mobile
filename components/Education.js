@@ -8,13 +8,13 @@ export default class Education extends Component {
         return (
           <View key={index} style={styles.eduBlock}>
             <Text style={styles.eduName}>{item.education_type === 'pg' ? 'Post Graduation' : item.education_type === 'ug' ? 'Under Graduation' : 'School'}</Text>
-              <Text><Text style={styles.label}>College/School </Text>:  {item.college_name}</Text>
-              <Text><Text style={styles.label}>University/Syllabus board </Text>:  {item.university}</Text>
-              <Text><Text style={styles.label}>Degree/Standard </Text>:  {item.degree}</Text>
-              <Text><Text style={styles.label}>Year of passing </Text>:  {item.passed_out}</Text>
-              <Text><Text style={styles.label}>Location </Text>:  {item.location}</Text>
-              <Text><Text style={styles.label}>Education type </Text>:  {item.study_type}</Text>
-              <Text><Text style={styles.label}>GPA/Percentage </Text>: {item.percentage}</Text>
+              <Text style={styles.content}><Text style={styles.label}>College/School </Text>:  {item.college_name}</Text>
+              <Text style={styles.content}><Text style={styles.label}>University/Syllabus board </Text>:  {item.university}</Text>
+              <Text style={styles.content}><Text style={styles.label}>Degree/Standard </Text>:  {item.degree}</Text>
+              <Text style={styles.content}><Text style={styles.label}>Year of passing </Text>:  {item.passed_out}</Text>
+              <Text style={styles.content}><Text style={styles.label}>Location </Text>:  {item.location}</Text>
+              <Text style={styles.content}><Text style={styles.label}>Education type </Text>:  {item.study_type}</Text>
+              <Text style={styles.content}><Text style={styles.label}>GPA/Percentage </Text>: {item.percentage}</Text>
           </View>
         )
       })
@@ -46,16 +46,26 @@ const styles = StyleSheet.create({
     color: '#0c77bd'
   },
   eduBlock: {
-    backgroundColor: '#f4f4f4',
-    padding: 5,
-    marginBottom: 5
+    backgroundColor: '#fff',
+    padding: 10,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,  
+    elevation: 5,
+    borderRadius: 3
   },
   eduName: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5
   },
+  content:{
+    color: '#666'
+  },
   label:{
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#444'
   }
 });

@@ -6,7 +6,6 @@ import {
 } from '../types/myprofile.types';
 import Api from './api';
 
-
 export const getUserRequest = () => {
   return {
     type: GET_USER_REQUEST
@@ -37,7 +36,6 @@ export const getUserDetails = (id) => {
     Api.get(url)
       .then(response => response.json())
       .then(response => {
-        console.log(response)
         if (response.status === 200) {
           dispatch(getUserSuccess(response));
         } else {

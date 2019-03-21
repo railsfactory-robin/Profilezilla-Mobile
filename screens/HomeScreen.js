@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -23,7 +22,6 @@ class HomeScreen extends React.Component {
     let users = 'https://cdn.pixabay.com/photo/2016/04/15/18/05/computer-1331579_960_720.png'
     let user = 'https://png.pngtree.com/svg/20170331/businessman_863430.png'
     let { current_user } = this.props
-    console.log("current_user",current_user )
     return (
       <View style={styles.mainContainer}>
         <Text style={styles.welcomeTextUser}>Hi, {current_user.user.first_name + " " + current_user.user.last_name}</Text>
@@ -35,22 +33,6 @@ class HomeScreen extends React.Component {
         </View>
         <Text style={styles.welcomeText}>Welcome to <Text style={styles.logoText}>Profilezilla</Text></Text>
         <Text style={styles.description}>Profilezilla is one of the leading HR management tools for Industries. It helps the organization to organize the employee's profiles, and create a resume in seconds.</Text>
-        <View style={styles.container}>
-          <View style={styles.box}>
-          <Image
-            source={{ uri: user }}
-            style={{ width: 60, height: 60 }}
-          />
-            <Text style={styles.text}>MY PROFILE</Text>
-          </View>
-          <View style={styles.box}>
-          <Image
-            source={{ uri: users }}
-            style={{ width: 60, height: 60 }}
-          />
-          <Text style={styles.text}>ALL PROFILE</Text>
-        </View>
-        </View>
       </View>
     );
   }
