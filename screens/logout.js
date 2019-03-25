@@ -17,7 +17,9 @@ class Logout extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-          <Button title="Sign out!" onPress={this._signOutAsync} />
+          <TouchableOpacity  title="Sign out!" onPress={this._signOutAsync}>
+            <Text style={styles.logout}>Sign out!</Text>
+          </TouchableOpacity>
       </View>
     );
   }
@@ -26,6 +28,7 @@ class Logout extends React.Component {
     await AsyncStorage.clear();
     this.props.navigation.navigate('Auth');
     this.props.logoutAction()
+    this.props.navigation.navigate('Auth');
   };
 }
 
@@ -39,5 +42,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  logout: {
+    textAlign: 'center',
+    padding: 12,
+    textDecorationLine: 'underline',
+    color: 'blue'
   }
 });

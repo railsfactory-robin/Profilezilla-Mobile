@@ -12,8 +12,9 @@ import {
 
 export default class RenderField extends Component {
   render() {
-    const { input: { onChange, ...restInput }, ref, placeholder, secureTextEntry, returnKeyType } = this.props;
+    const { input: { onChange, ...restInput }, ref, placeholder, secureTextEntry, returnKeyType,  meta: { touched, error, warning, error_messages } } = this.props;
     return (
+      <View>
         <TextInput 
         onChangeText={onChange} 
         {...restInput}
@@ -24,7 +25,9 @@ export default class RenderField extends Component {
         underlineColorAndroid="transparent"
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
-      />
+        />
+        {touched && ((error && <Text style={styles.inputErrorText} >{error}</Text>) || (warning && <Text style={styles.inputErrorText} >{warning}</Text>) || (error_messages && <Text style={styles.inputErrorText} >{error_messages}</Text>))}
+      </View>
     )
   }
 }
@@ -35,5 +38,10 @@ const styles = StyleSheet.create({
       textDecorationLine: 'none',
       textDecorationColor: '#fff',
       color: '#ffffff'
+    },
+    inputErrorText:{
+      color: 'red',
+      marginTop: 12,
+      fontSize: 12
     }
   });

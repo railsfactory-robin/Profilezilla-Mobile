@@ -52,6 +52,7 @@ import {
           if (response.status === 200) {
             AsyncStorage.setItem('token', response.auth_token)
             AsyncStorage.setItem('user', JSON.stringify(response))
+            Api.tokenfun(response.auth_token);
             dispatch(loginSuccess(response));
           } else {
             dispatch(loginFailure(response.error[0]));

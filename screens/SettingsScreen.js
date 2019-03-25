@@ -28,14 +28,18 @@ class SettingsScreen extends React.Component {
 
   componentDidMount(){
     let val = this.props.navigation.getParam('itemId') 
-
-    this.props.navigation.addListener('willFocus', (route) => {
-      if (val) {
-        this.props.getUserAction(val);
-      } else {
-        this.props.getUserAction();
-      }
-     });
+    if (val) {
+      this.props.getUserAction(val);
+    } else {
+      this.props.getUserAction();
+    }
+    // this.props.navigation.addListener('willFocus', (route) => {
+    //   if (val) {
+    //     this.props.getUserAction(val);
+    //   } else {
+    //     this.props.getUserAction();
+    //   }
+    //  });
   }
   
   _onRefresh = () => {

@@ -8,6 +8,7 @@ import {
 import { connect } from 'react-redux'
 import LogoTitle from './LogoTitle'
 import HandShake from './../assets/images/handshake.png'
+import Logout from './logout'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -19,12 +20,17 @@ class HomeScreen extends React.Component {
   };
 
   render() {
-    let users = 'https://cdn.pixabay.com/photo/2016/04/15/18/05/computer-1331579_960_720.png'
-    let user = 'https://png.pngtree.com/svg/20170331/businessman_863430.png'
     let { current_user } = this.props
+    console.log("current user", current_user)
+    let first_name;
+    let last_name;
+    if(current_user && current_user.user){
+      first_name = current_user.user.first_name;
+      last_name = current_user.user.last_name;
+    }
     return (
       <View style={styles.mainContainer}>
-        <Text style={styles.welcomeTextUser}>Hi, {current_user.user.first_name + " " + current_user.user.last_name}</Text>
+        <Text style={styles.welcomeTextUser}>Hi, {first_name + " " + last_name}</Text>
         <View style={styles.handShake}>
           <Image
           source={HandShake}
@@ -33,6 +39,7 @@ class HomeScreen extends React.Component {
         </View>
         <Text style={styles.welcomeText}>Welcome to <Text style={styles.logoText}>Profilezilla</Text></Text>
         <Text style={styles.description}>Profilezilla is one of the leading HR management tools for Industries. It helps the organization to organize the employee's profiles, and create a resume in seconds.</Text>
+          <Logout {...this.props}/>
       </View>
     );
   }

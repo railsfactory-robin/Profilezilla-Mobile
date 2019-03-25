@@ -13,6 +13,8 @@ _retrieveData = async () => {
     if (user) {
       Api.tokenfun(token);
       store.dispatch(loginSuccess(JSON.parse(user)));
+    } else {
+      this.props.navigation.navigate('Auth');
     }
 };
 

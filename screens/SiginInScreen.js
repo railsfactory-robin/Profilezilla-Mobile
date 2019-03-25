@@ -6,7 +6,8 @@ import {
   Text,
   KeyboardAvoidingView,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import LogoTitle from './LogoTitle'
 import { connect } from 'react-redux'
@@ -14,6 +15,10 @@ import { Field, reduxForm } from "redux-form";
 import { UserLogin, initializeForm } from './../actions/loginAction';
 import renderField from './../common/RenderField';
 import { Header } from 'react-navigation';
+import validate from './validate'
+import store from './../store';
+import Api from './../actions/api'
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 class SiginInScreen extends Component {
   constructor(props) {
@@ -36,6 +41,14 @@ class SiginInScreen extends Component {
   formSubmit(values) {
     this.props.loginAction(values)
   }
+
+componentDidUpdate(){
+  let { message } = this.props;
+  if (message) {
+    this.refs.toast.show(message,DURATION.LENGTH_LONG);
+  }
+}
+
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.current_user && nextProps.current_user.user) {
@@ -88,6 +101,16 @@ class SiginInScreen extends Component {
           </View>
           </KeyboardAvoidingView>
         </ScrollView>
+        <Toast
+            ref="toast"
+            style={{backgroundColor:'black'}}
+            position='bottom'
+            positionValue={200}
+            fadeInDuration={750}
+            fadeOutDuration={2000}
+            opacity={0.8}
+            textStyle={{color:'red'}}
+          />
       </ImageBackground>
     )
   }
@@ -95,6 +118,7 @@ class SiginInScreen extends Component {
 
 SiginInScreen = reduxForm({
   form: 'SiginInScreenForm',
+  validate
 })(SiginInScreen);
 
 const mapDispatchToProps = (dispatch) => ({
