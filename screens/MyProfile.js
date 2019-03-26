@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, Image } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import LogoTitle from './LogoTitle'
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
@@ -30,14 +30,15 @@ export default class MyProfile extends React.Component {
           <Text style={styles.heading}>Update your profile details</Text>
         </View>
         <View style={styles.updateWrap}>
-          <View style={styles.updateBox}>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm')}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: user_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
-            <Text style={styles.title}>Personal Information</Text>
-          </View>
+            <Text style={styles.title}>Personal Informations</Text>
+          </TouchableOpacity>
           <View style={styles.updateBox}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image

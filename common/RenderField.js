@@ -20,7 +20,7 @@ export default class RenderField extends Component {
         {...restInput}
         ref={ref}
         style={styles.inputField} 
-        placeholderTextColor="#fff"
+        placeholderTextColor="#ddd"
         returnKeyType={returnKeyType}
         underlineColorAndroid="transparent"
         placeholder={placeholder}
@@ -36,8 +36,10 @@ export default class RenderField extends Component {
 const styles = StyleSheet.create({
     inputField: {
       textDecorationLine: 'none',
-      textDecorationColor: '#fff',
-      color: '#ffffff'
+      borderColor: '#ced4da',
+      borderWidth: 1,
+      borderRadius: 3,
+      padding:5
     },
     inputErrorText:{
       color: 'red',

@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MyProfile from '../screens/MyProfile';
 import ViewAll from '../screens/ViewAllProfile';
 import SettingsScreen from '../screens/SettingsScreen';
+import PersonalInfoScreen from './../components/BasicinfoForm'
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -28,6 +29,7 @@ HomeStack.navigationOptions = {
 
 const MyProfileStack = createStackNavigator({
   MyProfile: MyProfile,
+  BasicinfoForm: PersonalInfoScreen
 });
 
 MyProfileStack.navigationOptions = {

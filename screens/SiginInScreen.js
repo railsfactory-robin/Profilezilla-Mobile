@@ -16,8 +16,6 @@ import { UserLogin, initializeForm } from './../actions/loginAction';
 import renderField from './../common/RenderField';
 import { Header } from 'react-navigation';
 import validate from './validate'
-import store from './../store';
-import Api from './../actions/api'
 import Toast, {DURATION} from 'react-native-easy-toast'
 
 class SiginInScreen extends Component {
