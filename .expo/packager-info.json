@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 10771,
+  "expoServerNgrokUrl": "https://7i-8pz.anonymous.profilezilla.exp.direct",
+  "packagerNgrokUrl": "https://packager.7i-8pz.anonymous.profilezilla.exp.direct",
+  "ngrokPid": 10831,
   "webpackServerPort": null
 }

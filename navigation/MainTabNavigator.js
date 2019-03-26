@@ -7,7 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MyProfile from '../screens/MyProfile';
 import ViewAll from '../screens/ViewAllProfile';
 import SettingsScreen from '../screens/SettingsScreen';
-import PersonalInfoScreen from './../components/BasicinfoForm'
+import PersonalInfoScreen from './../components/MyProfile'
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,

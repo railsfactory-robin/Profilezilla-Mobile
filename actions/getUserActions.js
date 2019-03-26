@@ -36,7 +36,6 @@ export const getUserDetails = (id) => {
     Api.get(url)
       .then(response => response.json())
       .then(response => {
-        console.log("respone", response)
         if (response.status === 200) {
           dispatch(getUserSuccess(response));
         } else {

@@ -3,50 +3,68 @@ import { ScrollView, StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingV
 import { connect } from 'react-redux'
 import { Field, reduxForm } from "redux-form";
 import renderField from './../common/RenderField'
-import RenderRadioGrop from './../common/RenderRadioGroup'
 import RenderDatePicker from './../common/renderDatePicker'
-import LogoTitle from './../screens/LogoTitle'
-import { Header } from 'react-navigation';
+import renderRadionset from './../common/RenderRadioSet'
 
 class BasicinfoForm extends Component {
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    title: 'Please sign in',
-    headerLeft: null,
-    headerStyle: {
-      backgroundColor: '#0c77bd',
-    }
-  };
-
   state = {
+    check: true,
     genderOptions: [
       {
         label: 'Male',
         value: "male",
-        size: 18,
       },
       {
         label: 'Female',
         value: "female",
-        size: 18,
       }
     ],
     maritalOptions:[
       {
         label: 'Unmarried',
-        value: "unmarried",
-        size: 18,
+        value: "unmarried"
       },
       {
         label: 'Married',
-        value: "married",
-        size: 18,
+        value: "married"
       }
     ]
   }
-
-  formSubmit = values => {
+  formSubmit(values){
     console.log(values, "values")
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.check && nextProps.BasicInformation && nextProps.addresses) {
+      let obj = {}
+      obj.first_name = nextProps.BasicInformation.first_name
+      obj.contact_number = nextProps.BasicInformation.contact_number
+      obj.dob = nextProps.BasicInformation.dob
+      obj.gender = nextProps.BasicInformation.gender
+      obj.place_of_birth = nextProps.BasicInformation.place_of_birth
+      obj.blood_group = nextProps.BasicInformation.blood_group
+      obj.spouse_name = nextProps.BasicInformation.spouse_name
+      obj.spouse_dob = nextProps.BasicInformation.spouse_dob
+      obj.children_name = nextProps.BasicInformation.children_name
+      obj.children_dob = nextProps.BasicInformation.children_dob
+      obj.alternative_number = nextProps.BasicInformation.alternative_number
+      obj.anniversary_date = nextProps.BasicInformation.anniversary_date
+      obj.personal_email = nextProps.BasicInformation.personal_email
+      obj.known_languages = nextProps.BasicInformation.known_languages
+      obj.last_name = nextProps.BasicInformation.last_name
+      obj.marital_status = nextProps.BasicInformation.marital_status
+      obj.nationality = nextProps.BasicInformation.nationality
+      obj.current_address = nextProps.addresses.current_address
+      if (nextProps.addresses.new_address) {
+        obj.permanant_address = 'new'
+      }
+      if (nextProps.addresses.current_address) {
+        obj.permanant_address = 'same'
+      }
+      obj.new_address = nextProps.addresses.new_address || nextProps.addresses.permanant_address
+      this.props.initialize(obj)
+      this.setState({ check: false })
+    }
   }
 
   render() {
@@ -87,11 +105,7 @@ class BasicinfoForm extends Component {
             </View>
             <View style={styles.field}>
               <Text style={styles.label}>Gender</Text>
-              <Field
-                name="gender"
-                component={RenderRadioGrop}
-                data ={genderOptions}
-              />
+              <Field name="gender" radios={genderOptions} component={renderRadionset} />
             </View>
             <View style={styles.field}>
               <Text style={styles.label}>Date Of Birth</Text>
@@ -135,11 +149,7 @@ class BasicinfoForm extends Component {
             </View>
             <View style={styles.field}>
               <Text style={styles.label}>Marital Status</Text>
-              <Field
-                name="marital_status"
-                component={RenderRadioGrop}
-                data ={maritalOptions}
-              />
+              <Field name="marital_status" radios={maritalOptions} component={renderRadionset} />
             </View>
             <View style={styles.field}>
               <Text style={styles.label}>Spouse Name</Text>
@@ -156,6 +166,31 @@ class BasicinfoForm extends Component {
               <Text style={styles.label}>Date Of Birth</Text>
               <Field
                 name="spouse_dob"
+                component={RenderDatePicker}
+              />
+            </View>
+            <View style={styles.field}>
+              <Text style={styles.label}>Children</Text>
+              <Field
+                name="children_name"
+                component={renderField}
+                placeholder="Children Name"
+                ref="2"
+                secureTextEntry={false}
+                returnKeyType="next"
+              />
+            </View>
+            <View style={styles.field}>
+              <Text style={styles.label}>Date Of Birth</Text>
+              <Field
+                name="children_dob"
+                component={RenderDatePicker}
+              />
+            </View>
+            <View style={styles.field}>
+              <Text style={styles.label}>Anniversary Date</Text>
+              <Field
+                name="anniversary_date"
                 component={RenderDatePicker}
               />
             </View>
@@ -176,10 +211,11 @@ BasicinfoForm = reduxForm({
 })(BasicinfoForm);
 
 const mapDispatchToProps = (dispatch) => ({
+  
 })
 
 const mapStateToProps = state => ({
-
+  current_user: state.loginReducer.user
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BasicinfoForm)

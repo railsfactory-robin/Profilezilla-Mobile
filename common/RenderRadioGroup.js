@@ -7,7 +7,6 @@ export default class RenderRadioGrop extends Component {
 
   render() {
     const { input: { onChange, value }, data} = this.props
-    console.log(this.props,"asdadad")
     return (
       <View style={styles.container}>
         <RadioGroup radioButtons={data} value={value}  onPress={onChange} flexDirection='row'/>

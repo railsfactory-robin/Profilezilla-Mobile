@@ -27,17 +27,12 @@ class ViewAllProfile extends React.Component {
     this.props.getAllUserAction({ offset: this.state.offset, limit: this.state.limit })
   }
 
-  componentWillReceiveProps(newProps) {
-    console.log("view all", newProps.screenProps)
-  }
-
   itemForPagination() {
     return Math.ceil(this.props.total_count / this.state.limit);
   }
 
   render() {
     let { user_list } = this.props
-    console.log(user_list, "user_list")
     return (
       <View style={styles.container}>
         <View style={styles.updateText}>
