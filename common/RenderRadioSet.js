@@ -7,7 +7,7 @@ class RenderRadioSet extends Component {
     const { radios, input:{ value, onChange } } = this.props;
     return (
       <View style={styles.container}>
-        { radios.map((radio,key) => <Radio key={radio.label} {...radio} onChange={onChange} checked={radio.value === value} />)}
+        { radios.map(radio => <Radio key={radio.label} {...radio} onChange={onChange} checked={radio.value === value} />)}
       </View>
     )
   }

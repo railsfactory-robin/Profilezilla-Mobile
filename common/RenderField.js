@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
 import {
-    AsyncStorage,
-    ImageBackground,
     StyleSheet,
     Text,
-    KeyboardAvoidingView,
     View,
     TextInput,
-    TouchableOpacity
   } from 'react-native';
 
 export default class RenderField extends Component {
