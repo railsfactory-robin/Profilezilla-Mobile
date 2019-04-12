@@ -12,13 +12,51 @@ import { CreateUserProfile } from '../actions/myProfileAction'
 import { ImagePicker } from 'expo';
 
 class BasicinfoForm extends Component {
-  state = {
-    check: true,
-    image: null,
+  constructor(props){
+    super(props)
+    this.state = {check: true}
+    this.formSubmit = this.formSubmit.bind(this)
   }
-
+ 
   formSubmit(values){
-    console.log(values, "values")
+    if (this.props.data && this.props.data.urls || this.props.BasicInformation && this.props.BasicInformation.image_url) {
+      if (this.props.BasicInformation && this.props.BasicInformation.image_url && this.props.data.length == 0) {
+        values = Object.assign({}, values, { image_url: this.props.BasicInformation.image_url })
+      } else {
+        values = Object.assign({}, values, { image_url: this.props.data.urls[0] })
+      }
+      let addresses_attributes = {}
+      if (values.current_address) {
+        values.current_address = Object.assign({}, values.current_address, { address_type: 'current_address' })
+      }
+      if (values.new_address) {
+        values.new_address = Object.assign({}, values.new_address, { address_type: 'new_address' })
+      }
+      let permanant_address = {}
+      let current_address = values.current_address
+      let new_address = values.new_address
+      if (values.permanant_address === 'new') {
+        permanant_address = values.new_address
+      } else {
+        permanant_address = values.current_address
+      }
+      permanant_address = Object.assign({}, permanant_address, { address_type: 'permanant_address' })
+
+      addresses_attributes = Object.assign({}, addresses_attributes, { permanant_address: permanant_address })
+      addresses_attributes = Object.assign({}, addresses_attributes, { current_address: current_address })
+      if (values.new_address) {
+        addresses_attributes = Object.assign({}, addresses_attributes, { new_address: new_address })
+      }
+      values = Object.assign({}, values, { addresses_attributes: addresses_attributes })
+
+      delete values.current_address
+      delete values.new_address
+      delete values.permanant_address
+      this.props.createUserAction({ profiles: values })
+    } else {
+      alert("Please Upload the Image")
+    }
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -70,23 +108,28 @@ class BasicinfoForm extends Component {
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 4],
       base64: true
     });
-
-    console.log(result, "asdasdadad");
     if (!result.cancelled) {
-      result.name = "1asd "
-      this.setState({ image: result.uri });
-      this.props.upload(result);
+      let name  = result.uri.split("/")
+      let len = name.length
+      result.name = name[len - 1]
+      const data = new FormData();
+      data.append("photo", {
+        name: result.name,
+        type: 'image/jpg',
+        uri: result.uri
+      });
+      this.props.upload(data, result);
     }
   };
 
   render() {
-    let { image } = this.state;
     let { handleSubmit, PersonalinfoForm, data } = this.props;
     let values = PersonalinfoForm && PersonalinfoForm.values ? PersonalinfoForm.values : {}
     let { image_url } = this.props.BasicInformation ? this.props.BasicInformation : {}
+    console.log("data", data)
     return (
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView
@@ -97,8 +140,6 @@ class BasicinfoForm extends Component {
             <Text style={styles.heading}>Personal Details</Text>
           </View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
       </View>
           <View style={styles.formWrapper}>
             <View style={styles.field}>
@@ -371,13 +412,13 @@ class BasicinfoForm extends Component {
                 />
             </View>
             <View style={styles.field}>
-              <Button
-                title="Pick an image from camera roll"
-                onPress={this._pickImage}
-              />
               {data && data.urls && this.renderImage(data.urls[0])}
               {!data.urls && image_url && this.renderImage(image_url)}
             </View>
+              <Button
+              title="Pick an image from camera roll"
+              onPress={this._pickImage}
+            />
             <TouchableOpacity onPress={handleSubmit(this.formSubmit)}>
               <View style={styles.login}>
                 <Text style={{ textAlign: 'center', fontSize: 16, color: '#fff' }}>Submit</Text>
@@ -395,7 +436,7 @@ BasicinfoForm = reduxForm({
 })(BasicinfoForm);
 
 const mapDispatchToProps = (dispatch) => ({
-  upload: (file) => dispatch(fileUploader(file)),
+  upload: (file, result) => dispatch(fileUploader(file, result)),
   createUserAction: (user) => dispatch(CreateUserProfile(user))
 })
 

@@ -31,7 +31,7 @@ export default class MyProfile extends React.Component {
         </View>
         <View style={styles.updateWrap}>
           <TouchableOpacity style={styles.updateBox} onPress={() =>
-            this.props.navigation.push('BasicinfoForm')}>
+            this.props.navigation.navigate('BasicinfoForm', {tab: 1})}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: user_img }}
@@ -39,70 +39,79 @@ export default class MyProfile extends React.Component {
             />
             <Text style={styles.title}>Personal Informations</Text>
           </TouchableOpacity>
-          <View style={styles.updateBox}>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm', {tab: 2})}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: education_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
             <Text style={styles.title}>Education</Text>
-          </View>
-          <View style={styles.updateBox}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm', {tab: 3})}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: experience_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
             <Text style={styles.title}>Experience</Text>
-          </View>
-          <View style={styles.updateBox}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm', {tab: 4})}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: skill_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
             <Text style={styles.title}>Skill Set</Text>
-          </View>
-          <View style={styles.updateBox}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm', {tab: 5})}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: project_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
             <Text style={styles.title}>Projects</Text>
-          </View>
-          <View style={styles.updateBox}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm', {tab: 6})}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: info_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
             <Text style={styles.title}>Additional Information</Text>
-          </View>
-          <View style={styles.updateBox}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm', {tab: 7})}>
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: attachment_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
             <Text style={styles.title}>Attachments</Text>
-          </View>
-          <View style={styles.updateBox}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm', {tab: 8})} >
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: family_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
             <Text style={styles.title}>Family History</Text>
-          </View>
-          <View style={styles.updateBox}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.updateBox} onPress={() =>
+            this.props.navigation.push('BasicinfoForm', {tab: 9})}
+          >
           <FontAwesome style={styles.edit}>{Icons.pencilAlt}</FontAwesome>
             <Image
               source={{ uri: emergency_img }}
               style={{ width: 35, height: 35, marginBottom: 5 }}
             />
             <Text style={styles.title}>Emergency Contacts</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

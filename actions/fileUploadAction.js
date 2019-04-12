@@ -33,12 +33,19 @@ import {
   
   function postSignedUrl(data, file) {
     let url = data.urls[0].signedUrl;
-    return Api.s3FileUpload(url, file);
+    // return Api.s3FileUpload(url, file.file);
+    return fetch(url, {
+      method: 'post',
+      body: file
+    }).then(res => {
+      console.log(data,"sdfsffff")
+      debugger
+    });
   }
   
   
-  export const fileUploader = (accepted_files, photFor) => {
-    let file = { name: accepted_files.name, type: accepted_files.type }
+  export const fileUploader = (accepted_files, result) => {
+    let file = { name: result.name, type: result.type }
     return dispatch => {
       dispatch(getSignedUrlRequest());
       Api.post('/api/v1/s3/sign', { files: file })
@@ -47,14 +54,15 @@ import {
           postSignedUrl(data, accepted_files)
             .then(res => {
               data.message = "Successfuly uploaded";
-              dispatch(getSignedUrlSuccess(data, photFor))
+              dispatch(getSignedUrlSuccess(data, result))
             })
             .catch(error => {
-              dispatch(getSignedUrlFailure(error, photFor))
+              alert("error")
+              dispatch(getSignedUrlFailure(error, result))
             });
         })
         .catch((err) => {
-          dispatch(getSignedUrlFailure(err, photFor))
+          dispatch(getSignedUrlFailure(err, result))
         })
     }
   }
