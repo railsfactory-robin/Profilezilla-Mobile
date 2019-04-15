@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Image, Button } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, ActivityIndicator, TouchableOpacity, KeyboardAvoidingView, Image, Button } from 'react-native';
 import { connect } from 'react-redux'
 import { Field, reduxForm } from "redux-form";
 import renderField from './../common/RenderField'
@@ -8,17 +8,21 @@ import renderRadionset from './../common/RenderRadioSet'
 import renderSelect from './../common/renderSelect'
 import { getStates, getCountries, genderOptions, maritalOptions, addressOptions } from './../common/Util'
 import { fileUploader } from './../actions/fileUploadAction'
-import { CreateUserProfile } from '../actions/myProfileAction'
+import { CreateUserProfile, initialize } from '../actions/myProfileAction'
 import { ImagePicker } from 'expo';
+import FontAwesome, { Icons } from 'react-native-fontawesome';
+import Modal from './../common/Modal'
 
 class BasicinfoForm extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.state = {check: true}
+    this.state = { check: true }
     this.formSubmit = this.formSubmit.bind(this)
+    this.cancel = this.cancel.bind(this)
+    this.ok = this.ok.bind(this)
   }
- 
-  formSubmit(values){
+
+  formSubmit(values) {
     if (this.props.data && this.props.data.urls || this.props.BasicInformation && this.props.BasicInformation.image_url) {
       if (this.props.BasicInformation && this.props.BasicInformation.image_url && this.props.data.length == 0) {
         values = Object.assign({}, values, { image_url: this.props.BasicInformation.image_url })
@@ -92,14 +96,36 @@ class BasicinfoForm extends Component {
     }
   }
 
-  renderImage(data){
+  // componentDidUpdate() {
+  //   let { message } = this.props;
+  //   if (message) {
+  //     this.refs._scrollView.scrollTo({ x: 0, y: 0, animated: true });
+  //     this.refs.toast.show(message, DURATION.LENGTH_LONG, () => {
+  //       this.props.navigation.navigate('MyProfile')
+  //       this.props.initializeData()
+  //     });
+  //   }
+  // }
+
+  ok() {
+    this.props.initializeData()
+    this.props.navigation.navigate('MyProfile')
+  }
+
+  cancel(){
+    this.props.initializeData()
+  }
+
+
+  renderImage(data) {
     let image_path = data.publicUrl;
-    return(
-      <View style={styles.titleIconContainer}>
+    return (
+      <View style={styles.titleContainer}>
+        <FontAwesome style={styles.icon}>{Icons.camera} </FontAwesome>
         <Image
-        source={{ uri: image_path }}
-        style={{ width: 85, height: 85, borderColor:'#ddd', borderWidth:1 }}
-        resizeMode="cover"
+          source={{ uri: image_path }}
+          style={{ width: 125, height: 125, borderColor: '#ddd', borderWidth: 1, marginBottom: 5 }}
+          resizeMode="cover"
         />
       </View>
     )
@@ -112,7 +138,7 @@ class BasicinfoForm extends Component {
       base64: true
     });
     if (!result.cancelled) {
-      let name  = result.uri.split("/")
+      let name = result.uri.split("/")
       let len = name.length
       result.name = name[len - 1]
       const data = new FormData();
@@ -126,12 +152,12 @@ class BasicinfoForm extends Component {
   };
 
   render() {
-    let { handleSubmit, PersonalinfoForm, data } = this.props;
+    let { handleSubmit, PersonalinfoForm, data, error_status } = this.props;
     let values = PersonalinfoForm && PersonalinfoForm.values ? PersonalinfoForm.values : {}
     let { image_url } = this.props.BasicInformation ? this.props.BasicInformation : {}
-    console.log("data", data)
+    let loader = Object.keys(values).length == 0
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} ref='_scrollView'>
         <KeyboardAvoidingView
           keyboardVerticalOffset={0}
           style={{ flex: 1 }}
@@ -139,30 +165,37 @@ class BasicinfoForm extends Component {
           <View style={styles.updateText}>
             <Text style={styles.heading}>Personal Details</Text>
           </View>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      </View>
+          {loader && <View style={styles.loading}>
+           <ActivityIndicator size='large' />
+          </View>}
           <View style={styles.formWrapper}>
-            <View style={styles.field}>
-              <Text style={styles.label}>First Name</Text>
-              <Field
-                name="first_name"
-                component={renderField}
-                placeholder="First Name"
-                ref="1"
-                secureTextEntry={false}
-                returnKeyType="next"
-              />
-            </View>
-            <View style={styles.field}>
-              <Text style={styles.label}>Last Name</Text>
-              <Field
-                name="last_name"
-                component={renderField}
-                placeholder="Last Name"
-                ref="2"
-                secureTextEntry={false}
-                returnKeyType="next"
-              />
+            <View style={styles.imgWrap}>
+              {data && data.urls && this.renderImage(data.urls[0])}
+              {!data.urls && image_url && this.renderImage(image_url)}
+              <View style={styles.imgRightPart}>
+                <View style={styles.field}>
+                  <Text style={styles.label}>First Name</Text>
+                  <Field
+                    name="first_name"
+                    component={renderField}
+                    placeholder="First Name"
+                    ref="1"
+                    secureTextEntry={false}
+                    returnKeyType="next"
+                  />
+                </View>
+                <View style={styles.field}>
+                  <Text style={styles.label}>Last Name</Text>
+                  <Field
+                    name="last_name"
+                    component={renderField}
+                    placeholder="Last Name"
+                    ref="2"
+                    secureTextEntry={false}
+                    returnKeyType="next"
+                  />
+                </View>
+              </View>
             </View>
             <View style={styles.field}>
               <Text style={styles.label}>Gender</Text>
@@ -212,111 +245,111 @@ class BasicinfoForm extends Component {
               <Text style={styles.label}>Marital Status</Text>
               <Field name="marital_status" radios={maritalOptions} component={renderRadionset} />
             </View>
-            {values && values.marital_status === 'married' && 
-            <View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Spouse Name</Text>
-                <Field
-                  name="spouse_name"
-                  component={renderField}
-                  placeholder="Spouse Name"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-              </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Date Of Birth</Text>
-                <Field
-                  name="spouse_dob"
-                  component={RenderDatePicker}
-                />
-              </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Children</Text>
-                <Field
-                  name="children_name"
-                  component={renderField}
-                  placeholder="Children Name"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-              </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Date Of Birth</Text>
-                <Field
-                  name="children_dob"
-                  component={RenderDatePicker}
-                />
-              </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Anniversary Date</Text>
-                <Field
-                  name="anniversary_date"
-                  component={RenderDatePicker}
-                />
-              </View>
-            </View>}
+            {values && values.marital_status === 'married' &&
+              <View>
+                <View style={styles.field}>
+                  <Text style={styles.label}>Spouse Name</Text>
+                  <Field
+                    name="spouse_name"
+                    component={renderField}
+                    placeholder="Spouse Name"
+                    ref="2"
+                    secureTextEntry={false}
+                    returnKeyType="next"
+                  />
+                </View>
+                <View style={styles.field}>
+                  <Text style={styles.label}>Date Of Birth</Text>
+                  <Field
+                    name="spouse_dob"
+                    component={RenderDatePicker}
+                  />
+                </View>
+                <View style={styles.field}>
+                  <Text style={styles.label}>Children</Text>
+                  <Field
+                    name="children_name"
+                    component={renderField}
+                    placeholder="Children Name"
+                    ref="2"
+                    secureTextEntry={false}
+                    returnKeyType="next"
+                  />
+                </View>
+                <View style={styles.field}>
+                  <Text style={styles.label}>Date Of Birth</Text>
+                  <Field
+                    name="children_dob"
+                    component={RenderDatePicker}
+                  />
+                </View>
+                <View style={styles.field}>
+                  <Text style={styles.label}>Anniversary Date</Text>
+                  <Field
+                    name="anniversary_date"
+                    component={RenderDatePicker}
+                  />
+                </View>
+              </View>}
             <View style={styles.field}>
-                <Text style={styles.label}>Current Address</Text>
-                <Field
-                  name="current_address.address_1"
-                  component={renderField}
-                  placeholder="Street Address 1"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-                <View style={styles.addBottom}/>
-                <Field
-                  name="current_address.address_2"
-                  component={renderField}
-                  placeholder="Street Address 2"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-                <View style={styles.addBottom}/>
-                <Field
-                  name="current_address.area"
-                  component={renderField}
-                  placeholder="Area"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-                <View style={styles.addBottom}/>
-                <Field
-                  name="current_address.city"
-                  component={renderField}
-                  placeholder="City"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-                <View style={styles.addBottom}/>
-                <Field
-                  name="current_address.state"
-                  component={renderSelect}
-                  options={getStates()}
-                />
-                <View style={styles.addBottom}/>
-                <Field
-                  name="current_address.zip"
-                  component={renderField}
-                  placeholder="Zip"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-                <View style={styles.addBottom}/>
-              </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Permanant Address</Text>
-                <Field name="permanant_address" radios={addressOptions} component={renderRadionset} />
-              </View>
-              {values.permanant_address && values.permanant_address === 'new' && 
+              <Text style={styles.label}>Current Address</Text>
+              <Field
+                name="current_address.address_1"
+                component={renderField}
+                placeholder="Street Address 1"
+                ref="2"
+                secureTextEntry={false}
+                returnKeyType="next"
+              />
+              <View style={styles.addBottom} />
+              <Field
+                name="current_address.address_2"
+                component={renderField}
+                placeholder="Street Address 2"
+                ref="2"
+                secureTextEntry={false}
+                returnKeyType="next"
+              />
+              <View style={styles.addBottom} />
+              <Field
+                name="current_address.area"
+                component={renderField}
+                placeholder="Area"
+                ref="2"
+                secureTextEntry={false}
+                returnKeyType="next"
+              />
+              <View style={styles.addBottom} />
+              <Field
+                name="current_address.city"
+                component={renderField}
+                placeholder="City"
+                ref="2"
+                secureTextEntry={false}
+                returnKeyType="next"
+              />
+              <View style={styles.addBottom} />
+              <Field
+                name="current_address.state"
+                component={renderSelect}
+                options={getStates()}
+              />
+              <View style={styles.addBottom} />
+              <Field
+                name="current_address.zip"
+                component={renderField}
+                placeholder="Zip"
+                ref="2"
+                secureTextEntry={false}
+                returnKeyType="next"
+              />
+              <View style={styles.addBottom} />
+            </View>
+            <View style={styles.field}>
+              <Text style={styles.label}>Permanant Address</Text>
+              <Field name="permanant_address" radios={addressOptions} component={renderRadionset} />
+            </View>
+            {values.permanant_address && values.permanant_address === 'new' &&
               <View>
                 <Field
                   name="new_address.address_1"
@@ -326,7 +359,7 @@ class BasicinfoForm extends Component {
                   secureTextEntry={false}
                   returnKeyType="next"
                 />
-                <View style={styles.addBottom}/>
+                <View style={styles.addBottom} />
                 <Field
                   name="new_address.address_2"
                   component={renderField}
@@ -335,7 +368,7 @@ class BasicinfoForm extends Component {
                   secureTextEntry={false}
                   returnKeyType="next"
                 />
-                <View style={styles.addBottom}/>
+                <View style={styles.addBottom} />
                 <Field
                   name="new_address.area"
                   component={renderField}
@@ -344,7 +377,7 @@ class BasicinfoForm extends Component {
                   secureTextEntry={false}
                   returnKeyType="next"
                 />
-                <View style={styles.addBottom}/>
+                <View style={styles.addBottom} />
                 <Field
                   name="new_address.city"
                   component={renderField}
@@ -353,13 +386,13 @@ class BasicinfoForm extends Component {
                   secureTextEntry={false}
                   returnKeyType="next"
                 />
-                <View style={styles.addBottom}/>
+                <View style={styles.addBottom} />
                 <Field
                   name="new_address.state"
                   component={renderSelect}
                   options={getStates()}
                 />
-                <View style={styles.addBottom}/>
+                <View style={styles.addBottom} />
                 <Field
                   name="new_address.zip"
                   component={renderField}
@@ -368,19 +401,19 @@ class BasicinfoForm extends Component {
                   secureTextEntry={false}
                   returnKeyType="next"
                 />
-                <View style={styles.addBottom}/>
+                <View style={styles.addBottom} />
               </View>}
-              <View style={styles.field}>
-                <Text style={styles.label}>Phone Number</Text>
-                <Field
-                  name="contact_number"
-                  component={renderField}
-                  placeholder="Phone Number"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-              </View>
+            <View style={styles.field}>
+              <Text style={styles.label}>Phone Number</Text>
+              <Field
+                name="contact_number"
+                component={renderField}
+                placeholder="Phone Number"
+                ref="2"
+                secureTextEntry={false}
+                returnKeyType="next"
+              />
+            </View>
             <View style={styles.field}>
               <Text style={styles.label}>Alternative Number</Text>
               <Field
@@ -393,38 +426,36 @@ class BasicinfoForm extends Component {
               />
             </View>
             <View style={styles.field}>
-                <Text style={styles.label}>Personal Email</Text>
-                <Field
-                  name="personal_email"
-                  component={renderField}
-                  placeholder="Personal Email"
-                  ref="2"
-                  secureTextEntry={false}
-                  returnKeyType="next"
-                />
-              </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Nationality</Text>
-                <Field
-                  name="nationality"
-                  component={renderSelect}
-                  options={getCountries()}
-                />
+              <Text style={styles.label}>Personal Email</Text>
+              <Field
+                name="personal_email"
+                component={renderField}
+                placeholder="Personal Email"
+                ref="2"
+                secureTextEntry={false}
+                returnKeyType="next"
+              />
             </View>
             <View style={styles.field}>
-              {data && data.urls && this.renderImage(data.urls[0])}
-              {!data.urls && image_url && this.renderImage(image_url)}
+              <Text style={styles.label}>Nationality</Text>
+              <Field
+                name="nationality"
+                component={renderSelect}
+                options={getCountries()}
+              />
             </View>
-              <Button
+
+            {/*<Button
               title="Pick an image from camera roll"
               onPress={this._pickImage}
-            />
+            />*/}
             <TouchableOpacity onPress={handleSubmit(this.formSubmit)}>
               <View style={styles.login}>
                 <Text style={{ textAlign: 'center', fontSize: 16, color: '#fff' }}>Submit</Text>
               </View>
             </TouchableOpacity>
           </View>
+          <Modal message={this.props.message} ok={this.ok} cancel={this.cancel}/>
         </KeyboardAvoidingView>
       </ScrollView>
     )
@@ -437,13 +468,18 @@ BasicinfoForm = reduxForm({
 
 const mapDispatchToProps = (dispatch) => ({
   upload: (file, result) => dispatch(fileUploader(file, result)),
-  createUserAction: (user) => dispatch(CreateUserProfile(user))
+  createUserAction: (user) => dispatch(CreateUserProfile(user)),
+  initializeData: () => dispatch(initialize())
 })
 
 const mapStateToProps = state => ({
   current_user: state.loginReducer.user,
   PersonalinfoForm: state.form.PersonalinfoForm,
   data: state.uploadReducer.data,
+  error_status: state.UserInfoReducer.error_status,
+  success_status: state.UserInfoReducer.success_status,
+  warning_message: state.UserInfoReducer.warning_message,
+  message: state.UserInfoReducer.message,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BasicinfoForm)
@@ -474,7 +510,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#25699c',
     padding: 10
   },
-  addBottom:{
+  addBottom: {
     marginBottom: 5
+  },
+  imgWrap: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  imgRightPart: {
+    marginLeft: 10,
+    flex: 1
+  },
+  titleContainer: {
+    position: 'relative'
+  },
+  icon: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
+    zIndex: 999
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 200,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })

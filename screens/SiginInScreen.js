@@ -54,7 +54,7 @@ componentDidUpdate(){
     }
   }
 
-  render() {
+  render() {  
     let { handleSubmit, message, error_status } = this.props;
     return (
       <ImageBackground source={require('./../assets/images/splash.jpg')} style={{ width: '100%', height: '100%' }}>
@@ -73,7 +73,8 @@ componentDidUpdate(){
               name="email"   
               component={renderField} 
               placeholder="Email Address" 
-              ref="1" 
+              ref="1"
+              color="#fff" 
               secureTextEntry={false}
               returnKeyType="next"
               />
@@ -84,6 +85,7 @@ componentDidUpdate(){
               component={renderField} 
               placeholder="Password" 
               ref="2" 
+              color="#fff" 
               secureTextEntry={true}
               returnKeyType="done"
               />
@@ -161,12 +163,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   username: {
-    borderWidth: 1,
-    borderColor: '#fff',
-    margin: 10,
-    borderRadius: 10,
-    height: 50,
-    padding: 10
+    marginTop: 10,
+    marginBottom: 5,
+    marginLeft: 10,
+    marginRight: 10,
   },
   login: {
     borderRadius: 10,

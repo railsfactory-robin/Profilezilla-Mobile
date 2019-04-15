@@ -64,3 +64,29 @@ export const addressOptions =[
     value: "new"
   }
 ]
+
+export const typeOptions =[
+  {
+    label: 'Part Time',
+    value: "Part time"
+  },
+  {
+    label: 'Full Time',
+    value: "Full time"
+  },
+  {
+    label: 'Distance Education',
+    value: "Distance education"
+  }
+]
+
+export const gpaOptions =[
+  {
+    label: 'GPA',
+    value: "gpa"
+  },
+  {
+    label: 'Percentage',
+    value: "percentage"
+  }
+]

@@ -8,14 +8,14 @@ import {
 
 export default class RenderField extends Component {
   render() {
-    const { input: { onChange, ...restInput }, ref, placeholder, secureTextEntry, returnKeyType,  meta: { touched, error, warning, error_messages } } = this.props;
+    const { input: { onChange, ...restInput }, color , ref, placeholder, secureTextEntry, returnKeyType,  meta: { touched, error, warning, error_messages } } = this.props;
     return (
       <View>
         <TextInput 
         onChangeText={onChange} 
         {...restInput}
         ref={ref}
-        style={styles.inputField} 
+        style={[styles.inputField, {color:color ? color : '#000'}]} 
         placeholderTextColor="#ddd"
         returnKeyType={returnKeyType}
         underlineColorAndroid="transparent"
@@ -35,11 +35,11 @@ const styles = StyleSheet.create({
       borderColor: '#ced4da',
       borderWidth: 1,
       borderRadius: 3,
-      padding:5
+      padding:5,
     },
     inputErrorText:{
       color: 'red',
-      marginTop: 12,
+      marginTop: 8,
       fontSize: 12
     }
   });

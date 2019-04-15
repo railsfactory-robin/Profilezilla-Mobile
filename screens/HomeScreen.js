@@ -19,6 +19,10 @@ class HomeScreen extends React.Component {
     }
   };
 
+  componentWillMount(){
+    this.props.navigation.push('BasicinfoForm', {tab: 2})
+  }
+
   render() {
     let { current_user } = this.props
     console.log("current user", current_user)

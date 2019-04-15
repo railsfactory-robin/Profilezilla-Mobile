@@ -73,6 +73,6 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   HomeStack,
   MyProfileStack,
-  ViewAllStack,
+  // ViewAllStack,
   SettingsStack,
 });

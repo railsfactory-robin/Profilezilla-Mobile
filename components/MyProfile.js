@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity, RefreshControl } from 'react-native';
 import { connect } from 'react-redux'
 import LogoTitle from './../screens/LogoTitle'
 import { getUserDetails } from '../actions/getUserActions'
@@ -16,6 +16,9 @@ import AttachmentForm from './AttachmentForm'
 class MyProfile extends Component {
   constructor(props){
     super(props)
+    this.state = {
+      refreshing: false,
+    };
   }
   static navigationOptions = {
     headerTitle: <LogoTitle />,
@@ -30,11 +33,22 @@ class MyProfile extends Component {
     this.props.userDetailsAction();
   }
 
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.props.userDetailsAction();
+    this.setState({refreshing: false});
+  }
+
   render() {
     let { profile, current_user } = this.props
     let tab = this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.tab;
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+      }>
         {tab === 1 && <BasicinfoForm {...this.props} BasicInformation={profile && profile.BasicInformation} addresses={profile && profile.addresses} />}
         {tab === 2 && <EducationForm {...this.props} education={profile && profile.education} />}
         {tab === 3 && <ExperienceForm {...this.props} experience={profile && profile.experience} />}
