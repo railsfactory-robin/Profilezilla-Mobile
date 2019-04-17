@@ -85,11 +85,11 @@ class EducationForm extends Component {
   }
 
   render() {
-    let { handleSubmit, EducationinfoForm, data, error_status } = this.props;
+    let { handleSubmit, EducationinfoForm} = this.props;
     let values = EducationinfoForm && EducationinfoForm.values ? EducationinfoForm.values : {}
     let loader = Object.keys(values).length == 0
     return (
-      <ScrollView style={styles.container} ref='_scrollView'>
+      <ScrollView style={styles.container}>
         <KeyboardAvoidingView
           keyboardVerticalOffset={0}
           style={{ flex: 1 }}

@@ -5,6 +5,7 @@ import {
 
 } from '../types/myprofile.types';
 import Api from './api';
+import { AsyncStorage } from 'react-native';
 
 export const getUserRequest = () => {
   return {
@@ -39,6 +40,9 @@ export const getUserDetails = (id) => {
         if (response.status === 200) {
           dispatch(getUserSuccess(response));
         } else {
+          if(response.message === 'Session expired. Please login again'){
+            AsyncStorage.clear();
+          }
           dispatch(getUserFailure(response.error[0]));
         }
       })

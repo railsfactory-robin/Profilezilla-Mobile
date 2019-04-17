@@ -20,7 +20,7 @@ class HomeScreen extends React.Component {
   };
 
   componentWillMount(){
-    this.props.navigation.push('BasicinfoForm', {tab: 2})
+    this.props.navigation.push('BasicinfoForm', {tab: 3})
   }
 
   render() {
